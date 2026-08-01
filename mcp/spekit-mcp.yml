@@ -1,0 +1,32 @@
+generated: '2026-07-21'
+method: searched
+status: published
+source: https://www.spekit.com/platform/mcp
+server:
+  name: spekit
+  description: >-
+    Spekit MCP makes governed GTM (go-to-market) knowledge available to any LLM
+    or MCP-enabled tool. It exposes Spekit's Knowledge Engine over the Model
+    Context Protocol so agents always have the latest, on-brand, governed content,
+    with bidirectional flow — content created through MCP is pushed back into
+    Spekit governed and on-brand.
+  transport: http
+  # No public endpoint URL, auth flow, or config is published on the marketing
+  # page; connection is provisioned per-customer. Endpoint intentionally omitted
+  # rather than fabricated.
+  compatible_clients:
+    - Claude
+    - ChatGPT
+    - Microsoft Copilot
+    - Glean
+# Capabilities as described on the product page (capability-level, not verbatim
+# tool names — Spekit does not publish an exact tool manifest).
+capabilities:
+  - name: search_knowledge
+    description: Search and retrieve verified, governed GTM knowledge directly inside any LLM.
+  - name: fetch_resources
+    description: Rapidly fetch all resources to update content at scale.
+  - name: generate_deal_room
+    description: Generate Deal Rooms and launch materials from a single prompt.
+  - name: push_content
+    description: Push quality content back to Spekit's Knowledge Engine, governed and on-brand.

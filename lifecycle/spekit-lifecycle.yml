@@ -1,0 +1,11 @@
+generated: '2026-07-21'
+method: searched
+source: https://status.spekit.com
+status_page: https://status.spekit.com
+# status.spekit.com is a public UptimeRobot-powered status page (90-day uptime history).
+# No public versioning policy, deprecation policy, or SLA document was found on the
+# marketing/legal surface; Spekit does not publish a developer-facing REST API.
+versioning: null
+deprecation: null
+sla: null
+deprecated_operations: []

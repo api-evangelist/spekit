@@ -1,0 +1,13 @@
+generated: '2026-07-21'
+method: searched
+probe: true
+source: https://www.spekit.com/blog/spekit-successfully-completes-soc-2-type-ii-audit
+url: https://www.spekit.com/blog/spekit-successfully-completes-soc-2-type-ii-audit
+certifications:
+- SOC 2
+evidence:
+- source: https://www.spekit.com/blog/spekit-successfully-completes-soc-2-type-ii-audit
+  keywords:
+  - soc 2
+  - soc2
+  - trust center

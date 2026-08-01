@@ -1,0 +1,25 @@
+generated: '2026-07-21'
+method: searched
+source: https://www.spekit.com/security
+standards:
+  - id: soc2-type-ii
+    conforms: true
+    evidence: >-
+      SOC 2 Type II audit completed (auditor Dansa D'Arata Soucia LLP); verified
+      secure SDLC, access controls, logging/monitoring/alerting, encryption
+      controls, external penetration testing, and DR/backup procedures.
+      https://www.spekit.com/blog/spekit-successfully-completes-soc-2-type-ii-audit
+  - id: salesforce-security-review
+    conforms: true
+    evidence: Passed the Salesforce Security Review as a certified AppExchange vendor.
+  - id: iso-27001
+    conforms: false
+  - id: hipaa
+    conforms: false
+  - id: gdpr
+    conforms: false
+    evidence: >-
+      Privacy Policy references data-processing commitments but no ISO 27001,
+      HIPAA, or explicit GDPR certification is published.
+  - id: pci-dss
+    conforms: false

@@ -1,0 +1,26 @@
+# Spekit
+
+> Spekit is an AI-powered revenue enablement platform for B2B sales teams that delivers coaching, content, and deal intelligence inside rep workflows. Its GTM Knowledge Engine keeps governed go-to-market knowledge accurate and on-brand, and it exposes that knowledge to AI agents over the Model Context Protocol (MCP).
+
+This is an API Evangelist network profile, generated from the catalog. Spekit does not publish a public developer-facing REST API or OpenAPI definition; its programmatic surface is a governed-knowledge MCP server plus SaaS integrations.
+
+## Product
+- [Spekit](https://www.spekit.com): AI revenue enablement — GTM Knowledge Engine, agentic coaching, unified deal context, personalized buyer experiences.
+- [Platform integrations](https://www.spekit.com/platform/integrations): Salesforce, Gong, Slack, Gmail, Outlook, LinkedIn, HubSpot, Google Drive, SharePoint, Confluence, Zendesk; SSO via Okta, PingOne, Azure, OneLogin.
+
+## Agent / MCP
+- [Spekit MCP](https://www.spekit.com/platform/mcp): MCP server that makes governed GTM knowledge available to any LLM or MCP-enabled tool (Claude, ChatGPT, Copilot, Glean), with bidirectional content flow.
+
+## Trust & Status
+- [Security](https://www.spekit.com/security): SOC 2 Type II, Salesforce Security Review, encryption, penetration testing.
+- [Status](https://status.spekit.com): public uptime/status page.
+
+## Commercial
+- [Pricing](https://www.spekit.com/pricing)
+- [Request a demo](https://www.spekit.com/demo-request)
+- [Log in / App](https://app.spekit.co)
+- [Blog](https://www.spekit.com/blog)
+
+## Legal
+- [Privacy Policy](https://www.spekit.com/privacy-policy)
+- [Master Services Agreement](https://www.spekit.com/legal/msa)

@@ -1,9 +1,32 @@
 aid: spekit
 name: Spekit
-description: 'Spekit is a company surfaced as a portfolio company of craft-ventures, felicis, foundry-group
-  and added to the API Evangelist network as a stub for enrichment. Sector: saas. This profile is a lead
-  awaiting the enrichment pipeline.'
+description: >-
+  Spekit is an AI-powered revenue enablement platform for B2B sales teams,
+  delivering coaching, content, and deal intelligence inside rep workflows. Its
+  GTM Knowledge Engine keeps governed go-to-market knowledge accurate and
+  on-brand, pairs agentic coaching (the AI Sidekick) with unified deal context
+  from Salesforce, Gong, and email, and generates personalized buyer experiences
+  such as automated deal rooms. Spekit exposes its governed knowledge to AI
+  agents over the Model Context Protocol (MCP) so any LLM or MCP-enabled tool
+  always has the latest content. It is SOC 2 Type II audited and integrates
+  across Salesforce, Slack, Gmail, Outlook, HubSpot, and major SSO providers.
+  Spekit does not publish a public developer REST API; its programmatic surface
+  is the MCP server plus SaaS integrations. Surfaced as a portfolio company of
+  Craft Ventures, Felicis, and Foundry Group and enriched by the API Evangelist
+  pipeline.
 url: https://raw.githubusercontent.com/api-evangelist/spekit/refs/heads/main/apis.yml
+accessModel:
+  pricing: unknown
+  onboarding: approval
+  trial: false
+  try_now: false
+  public: false
+  label: Requires approval
+  confidence: medium
+  source: []
+  generated: '2026-07-22'
+  method: derived
+image: https://cdn.prod.website-files.com/67928cf7ed419b596caac76b/6a307193f0dd93f6607b0971_OpenGraphImage_2026.jpg
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
@@ -14,10 +37,16 @@ x-tier: stub
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-21'
 tags:
 - Company
 - Saas
+- Sales Enablement
+- Revenue Enablement
+- Digital Adoption
+- Knowledge Management
+- MCP
+- Artificial Intelligence
 apis: []
 maintainers:
 - FN: Kin Lane
@@ -27,3 +56,40 @@ maintainers:
 common:
 - type: Website
   url: https://spekit.com
+- type: MCPServer
+  url: mcp/spekit-mcp.yml
+- type: Lifecycle
+  url: lifecycle/spekit-lifecycle.yml
+- type: StatusPage
+  url: https://status.spekit.com
+- type: Conformance
+  url: conformance/spekit-conformance.yml
+- type: Compliance
+  url: https://www.spekit.com/security
+- type: TrustCenter
+  url: security/spekit-trust-center.yml
+- type: DomainSecurity
+  url: security/spekit-domain-security.yml
+- type: LLMsTxt
+  url: llms/spekit-llms.txt
+- type: Integrations
+  url: https://www.spekit.com/platform/integrations
+- type: Blog
+  url: https://www.spekit.com/blog
+- type: Pricing
+  url: https://www.spekit.com/pricing
+- type: SignUp
+  url: https://app.spekit.co/signup
+- type: Login
+  url: https://app.spekit.co
+- type: HelpCenter
+  url: https://help.spekit.com
+- type: PrivacyPolicy
+  url: https://www.spekit.com/privacy-policy
+- type: TermsOfService
+  url: https://www.spekit.com/legal/msa
+x-enrichment:
+  date: '2026-07-21'
+  status: enriched
+  artifacts_added: 6
+  pass: local-v1
