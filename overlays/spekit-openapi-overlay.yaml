@@ -1,0 +1,84 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Spekit API
+  version: 1.0.0
+extends: openapi/_original/spekit-openapi-original.yml
+x-generated: '2026-08-14'
+x-method: generated
+x-source: >-
+  Derived from the verbatim upstream document at https://api.spekit.co/api-schema/ plus the
+  provider's own operator documentation at
+  https://help.spekit.com/hc/en-us/articles/31041891807643-Spekit-API-Overview. Every value below
+  is stated by Spekit somewhere public; nothing here is invented. Applying this overlay produces
+  openapi/spekit-openapi.yml plus the annotations the upstream document omits.
+actions:
+- target: $
+  description: >-
+    The upstream document declares no servers[]. The host is established by Spekit's own Swagger
+    UI at https://api.spekit.co/docs/, which loads /api-schema/ and issues same-origin calls, and
+    by the API Overview help article which links there as the technical API documentation.
+  update:
+    servers:
+    - url: https://api.spekit.co
+      description: Spekit API production host
+- target: $.info
+  description: Catalog annotations and the operator documentation the spec description does not link.
+  update:
+    x-apievangelist-slug: spekit
+    x-api-evangelist-profile: https://apis.io/spekit/
+    x-documentation: https://help.spekit.com/hc/en-us/articles/31041891807643-Spekit-API-Overview
+    x-api-reference: https://api.spekit.co/docs/
+    x-status-page: https://status.spekit.com
+    x-vulnerability-disclosure: https://www.spekit.com/vulnerability-disclosure-program
+    contact:
+      name: Spekit Support
+      email: support@spekit.co
+      url: https://help.spekit.com
+- target: $.info
+  description: >-
+    Rate limit published in the API Overview help article but absent from the spec — 30 requests
+    per 10 seconds, 429 on exhaustion, exponential backoff advised, no RateLimit-* headers published.
+  update:
+    x-rate-limit:
+      requests: 30
+      window_seconds: 10
+      status_on_exhaustion: 429
+      response_headers: []
+      guidance: exponential backoff
+      source: https://help.spekit.com/hc/en-us/articles/31041891807643-Spekit-API-Overview
+- target: $.components.securitySchemes.tokenAuth
+  description: >-
+    Token issuance procedure, published in the help center but absent from the scheme description.
+  update:
+    x-token-issuance:
+      who: Spekit Account Admins only
+      where: Spekit Web App, Settings then API Tokens
+      expiry: configurable, 1 week through never-expire
+      display: shown once at generation and not retrievable afterwards
+      audit_events: [api_auth_token_generated, api_auth_token_revoked]
+      source: https://help.spekit.com/hc/en-us/articles/31041891807643-Spekit-API-Overview
+- target: $.paths['/v1/users/'].get
+  description: Capability grouping used by the API Evangelist profile.
+  update:
+    x-capability: user-intelligence
+- target: $.paths['/v1/analytics/searches/'].get
+  update:
+    x-capability: search-analytics
+- target: $.paths['/v1/analytics/speks/views/'].get
+  update:
+    x-capability: content-engagement
+- target: $.paths['/v1/analytics/speks/reactions/'].get
+  update:
+    x-capability: content-engagement
+- target: $.paths['/v1/analytics/user-activities/'].get
+  update:
+    x-capability: activity-feed
+x-gaps-not-repaired:
+- >-
+  No 4xx/5xx responses are declared on any operation. This overlay does NOT add them: Spekit
+  publishes no error schema, so any response object here would be invented. See
+  errors/spekit-problem-types.yml for what is known, and from where.
+- >-
+  The 21 UserActivity payload shapes are described in operation-description prose but not modelled
+  in components.schemas. Modelling them would be a reconstruction, not a harvest.
+- No examples are published for any response; none are fabricated here.

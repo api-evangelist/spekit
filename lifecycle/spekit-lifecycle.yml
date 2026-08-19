@@ -1,11 +1,64 @@
-generated: '2026-07-21'
+generated: '2026-08-14'
 method: searched
-source: https://status.spekit.com
+source: https://help.spekit.com/hc/en-us/articles/31041891807643-Spekit-API-Overview
+sources:
+- https://api.spekit.co/api-schema/
+- https://help.spekit.com/hc/en-us/articles/31041891807643-Spekit-API-Overview
+- https://help.spekit.com/hc/en-us/articles/53991371723035-Troubleshooting-Spekit-MCP
+- https://status.spekit.com
+versioning:
+  scheme: uri-path
+  current: v1
+  spec_version: 1.0.0 (v1)
+  docs: https://api.spekit.co/docs/
+  note: >-
+    Every published path is prefixed /v1/. info.version in the OpenAPI reads "1.0.0 (v1)". No
+    versioning POLICY is published — nothing states how a v2 would be introduced, how long v1
+    would be supported alongside it, or whether breaking changes can land inside v1.
+deprecation:
+  policy_url: null
+  sunset_header: false
+  deprecation_header: false
+  note: >-
+    No deprecation policy, no RFC 8594 Sunset/Deprecation header support, and no deprecated
+    operations or fields marked in the spec. The MCP connector's own docs describe a shipping
+    surface with a published limitations list rather than any deprecation ladder.
+sla:
+  url: null
+  uptime_target: null
+  note: >-
+    No public SLA or uptime commitment. Support hours are published: standard support
+    Monday–Friday 7:00 AM – 4:00 PM PT via support@spekit.co, with emergency/outage support
+    24/7/365.
 status_page: https://status.spekit.com
-# status.spekit.com is a public UptimeRobot-powered status page (90-day uptime history).
-# No public versioning policy, deprecation policy, or SLA document was found on the
-# marketing/legal surface; Spekit does not publish a developer-facing REST API.
-versioning: null
-deprecation: null
-sla: null
+status_page_detail:
+  http_status: 200
+  checked: '2026-08-14'
+  note: Public status page with 90-day uptime history.
+changelog:
+  url: https://spekit.canny.io/changelog
+  public: false
+  detail: changelog/spekit-changelog.yml
+roadmap:
+  url: https://spekit.canny.io/
+  public: false
+  note: Canny board requiring a Spekit login; statuses Open, Planned, In Progress, Complete.
+support:
+  email: support@spekit.co
+  help_center: https://help.spekit.com
+  hours: Mon–Fri 7:00 AM – 4:00 PM PT; emergency/outage 24/7/365
+surface_maturity:
+- surface: REST API
+  state: shipping
+  first_documented: help-center article last updated 2026-01-28
+  operations: 5
+  methods: [GET]
+- surface: MCP connector
+  state: shipping, actively expanding
+  first_documented: help-center articles created/updated 2026-08-05 to 2026-08-06
+  tools: 19
+  planned:
+  - Dedicated penetration test of the MCP server, scheduled for the September–October window.
+  - Marketplace listings submitted and awaiting each marketplace's review queue.
+  known_limitations: see mcp/spekit-mcp.yml limitations[]
 deprecated_operations: []

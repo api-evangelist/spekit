@@ -1,0 +1,116 @@
+generated: '2026-08-14'
+method: probed
+source: live GET of /.well-known/* across every Spekit host in apis.yml + the OpenAPI servers[] host
+note: >-
+  Two hosts answer 200 with an SPA/HTML shell for EVERY /.well-known/* path — api.spekit.co
+  and app.spekit.co both return the same 3,253-byte React index.html regardless of path. Those
+  are recorded as html-shell, NOT as documents. The only real .well-known documents Spekit
+  serves are the two OAuth discovery documents on the MCP host, mcp.spekit.co, which is why the
+  WellKnown pointer is earned here and not by the 200s on the app/API hosts.
+hosts:
+- host: https://mcp.spekit.co
+  documents:
+  - path: /.well-known/oauth-authorization-server   # RFC 8414
+    status: 200
+    content_type: application/json
+    document: true
+    file: spekit-mcp-oauth-authorization-server.json
+  - path: /.well-known/oauth-protected-resource/mcp  # RFC 9728, advertised in the WWW-Authenticate header
+    status: 200
+    content_type: application/json
+    document: true
+    file: spekit-mcp-oauth-protected-resource.json
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://api.spekit.co
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    document: false
+    note: html-shell — SPA catch-all, identical 3253-byte body on every path; not a document
+  - path: /.well-known/openid-configuration
+    status: 200
+    document: false
+    note: html-shell
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    document: false
+    note: html-shell
+  - path: /.well-known/api-catalog
+    status: 200
+    document: false
+    note: html-shell
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    document: false
+    note: html-shell
+  - path: /.well-known/agent-card.json
+    status: 200
+    document: false
+    note: html-shell — rejected as an agent card, body is HTML
+  - path: /.well-known/agent.json
+    status: 200
+    document: false
+    note: html-shell — rejected as an agent card, body is HTML
+- host: https://app.spekit.co
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    document: false
+    note: html-shell
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    document: false
+    note: html-shell
+  - path: /.well-known/agent-card.json
+    status: 200
+    document: false
+    note: html-shell — rejected as an agent card, body is HTML
+  - path: /.well-known/agent.json
+    status: 200
+    document: false
+    note: html-shell — rejected as an agent card, body is HTML
+- host: https://www.spekit.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /llms.txt
+    status: 200
+    content_type: text/plain
+    document: true
+    file: ../llms/spekit-llms.txt
+- host: https://help.spekit.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+security_txt: false
+agent_card: false
+checked: '2026-08-14'

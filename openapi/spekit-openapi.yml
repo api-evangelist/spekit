@@ -1,0 +1,548 @@
+openapi: 3.0.3
+info:
+  title: Spekit API
+  version: 1.0.0 (v1)
+  description: |2
+
+    Here, you will find comprehensive information and resources for integrating and utilizing our powerful API services. Whether you're a developer, a business owner, or an enthusiast, our API documentation is designed to help you understand the capabilities and functionalities of our API.
+
+    Our documentation provides detailed guides, tutorials, code examples, and reference materials to assist you in implementing our API effectively. You can explore various endpoints, authentication methods, request/response formats, and best practices to ensure seamless integration with your applications or systems.
+
+    To get started, navigate through the documentation sections to find the specific API you're interested in. Each API has its own dedicated documentation, including details about its endpoints, parameters, and possible responses.
+
+    Before you dive into the API integration, we kindly request that you review our <a href="https://spekit.com/api-license-agreement" target="_blank">API License Agreement</a> to understand the terms and conditions associated with using our services. It outlines important legal agreements, restrictions, and privacy considerations that govern your usage of our API.
+
+    To access the API License Agreement, please visit <a href="https://spekit.com/api-license-agreement" target="_blank">https://spekit.com/api-license-agreement</a>.
+
+    Thank you for choosing Spekit, and we look forward to seeing the innovative applications you'll create.
+
+    Happy coding!
+  license:
+    name: License Agreement
+    url: https://spekit.com/api-license-agreement
+servers:
+- url: https://api.spekit.co
+  description: Spekit API production host. The upstream document published at
+    https://api.spekit.co/api-schema/ declares no servers[]; the host is established by the
+    provider's own Swagger UI at https://api.spekit.co/docs/, which loads the schema and issues
+    same-origin calls, and by the Spekit API Overview help article which links there as the
+    technical API documentation.
+paths:
+  /v1/analytics/searches/:
+    get:
+      operationId: v1_analytics_searches_list
+      description: Returns a list of all searches created, including the user who
+        triggered search, search keyword, and the source.
+      summary: List all searches.
+      parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.  This is an opaque key provided
+          in the 'next' and 'previous' URLs in API responses. It may be ignored, otherwise.
+        schema:
+          type: string
+      - in: query
+        name: end_date
+        schema:
+          type: string
+          format: date-time
+        description: End Date till then we need to filter the results.
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page. Default value is 50. Maximum
+          is 100.
+        schema:
+          type: integer
+      - in: query
+        name: start_date
+        schema:
+          type: string
+          format: date-time
+        description: Start Date from where we need to start filtering.
+      tags:
+      - Searches
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSearchesList'
+          description: ''
+  /v1/analytics/speks/reactions/:
+    get:
+      operationId: v1_analytics_speks_reactions_list
+      description: Returns a list of all reactions made on speks, including the user
+        who reacted, spek details, and the reaction itself.
+      summary: List all spek reactions.
+      parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.  This is an opaque key provided
+          in the 'next' and 'previous' URLs in API responses. It may be ignored, otherwise.
+        schema:
+          type: string
+      - in: query
+        name: end_date
+        schema:
+          type: string
+          format: date-time
+        description: End Date till then we need to filter the results.
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page. Default value is 50. Maximum
+          is 100.
+        schema:
+          type: integer
+      - in: query
+        name: start_date
+        schema:
+          type: string
+          format: date-time
+        description: Start Date from where we need to start filtering.
+      tags:
+      - Spek Reactions
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTermReactionsList'
+          description: ''
+  /v1/analytics/speks/views/:
+    get:
+      operationId: v1_analytics_speks_views_list
+      description: Returns a list of all views made on speks, including the user details,
+        spek details, and the views itself.
+      summary: List all spek views.
+      parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.  This is an opaque key provided
+          in the 'next' and 'previous' URLs in API responses. It may be ignored, otherwise.
+        schema:
+          type: string
+      - in: query
+        name: end_date
+        schema:
+          type: string
+          format: date-time
+        description: End Date till then we need to filter the results.
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page. Default value is 50. Maximum
+          is 100.
+        schema:
+          type: integer
+      - in: query
+        name: start_date
+        schema:
+          type: string
+          format: date-time
+        description: Start Date from where we need to start filtering.
+      tags:
+      - Spek Views
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSpekViewsList'
+          description: ''
+  /v1/analytics/user-activities/:
+    get:
+      operationId: v1_analytics_user_activities_list
+      description: "Returns a list of all users who performed the mentioned activity
+        on the Spekit platform.\n\nSupported activity types and their corresponding
+        data structures:\n\n1. topic_created:\n   - id: string\n   - name: string\n
+        \  - description: string\n\n2. search:\n   - search_id: string\n   - keywords:
+        string\n   - source: string\n   - search_api: string\n\n3. team_created:\n
+        \  - id: string\n   - name: string\n   - description: string\n\n4. files_uploaded/marked_asset_read:\n
+        \  - id: string\n   - file_name: string\n   - label: string\n   - file_store_id:
+        string\n   - category: string\n   - file_size: number\n   - url: string\n
+        \  - content_type: string\n   - shareable: boolean\n\n5. asset view:\n   -
+        view_id: string\n   - content_id: string\n   - content_name: string\n   -
+        content_type: string\n   - content_source: string\n   - content_link: string\n
+        \  - view_source: string\n   - external_view: boolean\n\n6. reaction:\n   -
+        reaction_id: string\n   - reaction: string\n   - spek_id: string\n   - spek_name:
+        string\n   - spek_type: string\n   - spek_url: string\n\n7. spek_created/marked_spek_read:\n
+        \  - spek_id: string\n   - spek_type: string\n   - spek_name: string\n   -
+        spek_url: string\n   - deleted: boolean\n   - age: number\n   - expert_user_id:
+        string\n   - expert_name: string\n   - is_shareable: boolean\n\n8. spek view:\n
+        \  - view_id: string\n   - spek_id: string\n   - spek_type: string\n   - spek_name:
+        string\n   - spek_url: string\n   - view_source: string\n\n9. flow_start/flow_completion/flow_created:\n
+        \  - id: string\n   - label: string\n   - start_on: datetime\n   - end_on:
+        datetime\n   - deleted: boolean\n   - status: string\n   - frequency_period:
+        string\n   - frequency_value: number\n   - autolaunch: boolean\n\n10. spotlight_created/spotlight_completion:\n
+        \   - id: string\n    - label: string\n    - start_on: datetime\n    - end_on:
+        datetime\n    - deleted: boolean\n    - status: string\n    - frequency_period:
+        string\n    - frequency_value: number\n    - autolaunch: boolean\n\n11. knowledge_check_created:\n
+        \   - id: string\n    - title: string\n    - starts_on: datetime\n    - ends_on:
+        datetime\n    - passing_score: number\n    - status: string\n    - message:
+        string\n    - resource: string\n\n12. knowledge_check_attempt:\n    - knowledge_check_id:
+        string\n    - pct_correct: number\n    - total_questions_correct: number\n
+        \   - total_questions_attempted: number\n    - passed: boolean\n    - completed_at:
+        datetime\n    - status: string\n\n13. knowledge_check_question_attempt:\n
+        \   - question_id: string\n    - question_title: string\n    - is_correct:
+        boolean\n    - knowledge_check_id: string\n\n14. recommendation:\n    - id:
+        string\n    - label: string\n    - source: string\n    - version: string\n
+        \   - metric: string\n    - screen_name: string\n    - url: string\n    -
+        recommendation_type: string\n    - score: number\n    - engine: string\n    -
+        question: string\n    - response: string\n    - follow_up_question: string\n
+        \   - user_message: string\n    - ai_response: string\n    - query: string\n
+        \   - sources: string\n    - is_rex_active: boolean\n    - app: string\n\n15.
+        api_auth_token_generated/api_auth_token_revoked:\n    - id: string\n    -
+        key: string\n    - expiry: string\n    - expiry_dt: datetime\n    - description:
+        string\n    - deleted: boolean\n    "
+      summary: List all users for Activity type.
+      parameters:
+      - in: query
+        name: activity_type
+        schema:
+          type: string
+          enum:
+          - api_auth_token_generated
+          - api_auth_token_revoked
+          - asset view
+          - files_uploaded
+          - flow_completion
+          - flow_created
+          - flow_start
+          - knowledge_check_attempt
+          - knowledge_check_created
+          - knowledge_check_question_attempt
+          - marked_asset_read
+          - marked_spek_read
+          - reaction
+          - recommendation
+          - search
+          - spek view
+          - spek_created
+          - spotlight_completion
+          - spotlight_created
+          - team_created
+          - topic_created
+        description: Filter by activity type. Returns all activities if not specified.
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.  This is an opaque key provided
+          in the 'next' and 'previous' URLs in API responses. It may be ignored, otherwise.
+        schema:
+          type: string
+      - in: query
+        name: end_date
+        schema:
+          type: string
+          format: date-time
+        description: End Date till then we need to filter the results.
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page. Default value is 50. Maximum
+          is 100.
+        schema:
+          type: integer
+      - in: query
+        name: start_date
+        schema:
+          type: string
+          format: date-time
+        description: Start Date from where we need to start filtering.
+      tags:
+      - User Activities
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserActivityList'
+          description: ''
+  /v1/users/:
+    get:
+      operationId: v1_users_list
+      description: Returns a list of all users for an organization, with account details
+        including team memberships.
+      summary: List all the users.
+      parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.  This is an opaque key provided
+          in the 'next' and 'previous' URLs in API responses. It may be ignored, otherwise.
+        schema:
+          type: string
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page. Default value is 50. Maximum
+          is 100.
+        schema:
+          type: integer
+      tags:
+      - Users
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserList'
+          description: ''
+components:
+  schemas:
+    PaginatedSearchesList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+        previous:
+          type: string
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Searches'
+    PaginatedSpekViewsList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+        previous:
+          type: string
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SpekViews'
+    PaginatedTermReactionsList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+        previous:
+          type: string
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TermReactions'
+    PaginatedUserActivityList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+        previous:
+          type: string
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserActivity'
+    PaginatedUserList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+        previous:
+          type: string
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    Searches:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        keywords:
+          type: string
+        created_on:
+          type: string
+          format: date-time
+        source:
+          type: string
+      required:
+      - keywords
+      - source
+      - user
+    SpekDetails:
+      type: object
+      properties:
+        id:
+          type: string
+        link:
+          type: string
+        type_short:
+          type: string
+        label:
+          type: string
+        deleted:
+          type: boolean
+      required:
+      - deleted
+      - id
+      - label
+      - link
+      - type_short
+    SpekViews:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        spek:
+          allOf:
+          - $ref: '#/components/schemas/SpekDetails'
+          readOnly: true
+        view:
+          allOf:
+          - $ref: '#/components/schemas/TermViews'
+          readOnly: true
+        associated_teams:
+          type: array
+          items:
+            type: string
+      required:
+      - associated_teams
+      - spek
+      - user
+      - view
+    TeamRole:
+      type: object
+      description: Teams and roles of a user.
+      properties:
+        team:
+          type: string
+          readOnly: true
+        role:
+          type: string
+          readOnly: true
+      required:
+      - role
+      - team
+    TermReactions:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        spek_name:
+          type: string
+        spek_link:
+          type: string
+        spek_type:
+          type: string
+        created_on:
+          type: string
+          format: date-time
+        reaction:
+          type: string
+          readOnly: true
+      required:
+      - reaction
+      - spek_link
+      - spek_name
+      - spek_type
+      - user
+    TermViews:
+      type: object
+      properties:
+        id:
+          type: string
+        source:
+          type: string
+        user_action:
+          type: string
+        created_on:
+          type: string
+          format: date-time
+      required:
+      - id
+      - source
+      - user_action
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        is_active:
+          type: boolean
+        created_on:
+          type: string
+          format: date-time
+        teams:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamRole'
+      required:
+      - email
+      - first_name
+      - teams
+    UserActivity:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        created_on:
+          type: string
+          format: date-time
+        activity_type:
+          type: string
+        activity_id:
+          type: string
+        ip:
+          type: string
+      required:
+      - activity_id
+      - activity_type
+      - ip
+      - user
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

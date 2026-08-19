@@ -1,13 +1,47 @@
-generated: '2026-07-21'
+generated: '2026-08-14'
 method: searched
 probe: true
-source: https://www.spekit.com/blog/spekit-successfully-completes-soc-2-type-ii-audit
-url: https://www.spekit.com/blog/spekit-successfully-completes-soc-2-type-ii-audit
+source: https://trust.spekit.com/
+url: https://trust.spekit.com/
+platform: Drata (trust.spekit.com is a CNAME to trust.cname.drata.com)
 certifications:
-- SOC 2
+- name: SOC 2
+  status: confirmed
+  detail: >-
+    SOC 2 Type II. Independently corroborated outside the trust center — Spekit's own llms.txt
+    states "SOC 2 Type II", https://www.spekit.com/security carries the audit announcement
+    (auditor Dansa D'Arata Soucia LLP), and the MCP security FAQ cites a company-wide SOC 2
+    Type II report covering the platform and security controls.
+- name: ISO 27001
+  status: single-probe
+  detail: >-
+    Matched once by probe-security-programs.py in the trust.spekit.com body on 2026-08-14. NOT
+    reproducible on re-probe (see access below), and Spekit does not claim ISO 27001 anywhere on
+    its public marketing, security page or llms.txt — those say SOC 2 Type II and GDPR-aligned
+    practices only. Recorded as observed-once, not asserted as a held certification. Re-verify
+    before quoting.
+access:
+  reproducible: false
+  http_status: 403
+  reason: cloudflare-bot-challenge
+  detail: >-
+    Same-day re-probes of https://trust.spekit.com/ from curl and python-urllib across several
+    user agents all returned HTTP 403 with `cf-mitigated: challenge` and a "Just a moment..."
+    interstitial requiring JavaScript and cookies. The trust center is public to a browser but
+    is not machine-readable; a scored catalog cannot re-verify the certification list on demand.
+  checked: '2026-08-14'
+referenced_from:
+- https://www.spekit.com/security
+- https://www.spekit.com/llms.txt
+- https://help.spekit.com/hc/en-us/articles/53991678945435-Spekit-MCP-Data-Privacy-Security-FAQs
 evidence:
-- source: https://www.spekit.com/blog/spekit-successfully-completes-soc-2-type-ii-audit
+- source: https://trust.spekit.com/
   keywords:
   - soc 2
   - soc2
+  - iso 27001
   - trust center
+  note: single successful fetch, 2026-08-14, not reproducible
+- source: https://www.spekit.com/security
+  http_status: 200
+  keywords: [soc 2, soc 2 type ii]

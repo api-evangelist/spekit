@@ -1,0 +1,111 @@
+generated: '2026-08-14'
+method: searched
+source: openapi/spekit-openapi.yml
+docs: https://help.spekit.com/hc/en-us/articles/31041891807643-Spekit-API-Overview
+sources:
+- https://api.spekit.co/api-schema/
+- https://help.spekit.com/hc/en-us/articles/31041891807643-Spekit-API-Overview
+- https://help.spekit.com/hc/en-us/articles/53991371723035-Troubleshooting-Spekit-MCP
+authentication:
+  style: static bearer-style token in the Authorization header with a literal "Token " prefix
+  header: 'Authorization: Token <token>'
+  detail: authentication/spekit-authentication.yml
+idempotency:
+  supported: false
+  reason: >-
+    NOT APPLICABLE, not missing. The published REST API exposes the GET method only across all
+    five operations — there are no unsafe requests to make idempotent, so no Idempotency-Key
+    header, retry-token or replay-window contract exists or is needed. The MCP connector does
+    carry write tools, but its safety model is per-call human confirmation enforced by the AI
+    client through MCP tool annotations, not a server-side idempotency key: a repeated
+    "create content" call creates a second Spek. There is no dedupe contract on the write path.
+  header: null
+pagination:
+  style: cursor
+  parameters:
+  - name: cursor
+    in: query
+    required: false
+    description: Opaque key returned in the `next` and `previous` URLs of a response.
+  - name: page_size
+    in: query
+    required: false
+    default: 50
+    maximum: 100
+    description: Number of results per page.
+  response_envelope:
+    count: integer — total matching records
+    next: string, nullable — absolute URL of the next page (carries the cursor)
+    previous: string, nullable — absolute URL of the previous page
+    results: array — the page of records
+  applies_to: all five operations
+  note: >-
+    The envelope is Django REST Framework's standard cursor-pagination shape; every response
+    schema in the spec is a Paginated<Type>List wrapper.
+filtering:
+  time_window:
+    parameters: [start_date, end_date]
+    format: RFC 3339 date-time
+    applies_to:
+    - v1_analytics_searches_list
+    - v1_analytics_speks_reactions_list
+    - v1_analytics_speks_views_list
+    - v1_analytics_user_activities_list
+    note: Not available on v1_users_list.
+  enumerated:
+    parameter: activity_type
+    applies_to: [v1_analytics_user_activities_list]
+    values_count: 21
+    note: Returns all activity types when omitted.
+field_expansion:
+  supported: false
+  note: >-
+    No expand / fields / include parameter. Related objects are always embedded in full — every
+    analytics record carries a nested User object, and SpekViews additionally embeds SpekDetails
+    and TermViews. There is no sparse-fieldset control, so payload size is fixed by the schema.
+metadata:
+  supported: false
+  note: No customer-defined metadata bag on any resource.
+request_tracing:
+  request_id_header: null
+  note: >-
+    No request-id / correlation-id header is documented on the REST API. On the MCP side, Spekit
+    states all traffic is traced end-to-end for monitoring and incident investigation, and tool-call
+    events (caller, tool, timestamp, success/failure) are retained — but that telemetry lives in
+    Spekit's internal observability tooling, not in a customer-visible identifier returned to the
+    caller.
+versioning:
+  scheme: uri-path
+  current: v1
+  spec_version: 1.0.0 (v1)
+  detail: lifecycle/spekit-lifecycle.yml
+error_envelope:
+  documented: false
+  note: >-
+    No error schema is declared anywhere in the OpenAPI — every operation declares a 200 response
+    and nothing else, so 401/403/429 shapes are undocumented for the REST surface. The MCP surface
+    does return structured OAuth errors (RFC 6750 style: {"error":"invalid_token",
+    "error_description":"…"} with a WWW-Authenticate header carrying resource_metadata), and Spekit
+    states failed write tool calls "return a real error that describes what went wrong" and are
+    validated before anything is saved, so a failed write leaves no partial content.
+  detail: errors/spekit-problem-types.yml
+  rfc9457: false
+rate_limit_signaling:
+  documented_limit: 30 requests / 10 seconds (REST)
+  status: 429
+  headers: none published
+  guidance: Spekit instructs integrators to implement exponential backoff.
+  detail: rate-limits/spekit-rate-limits.yml
+http_methods:
+  rest: [GET]
+  note: >-
+    The public REST API is read-only by construction. All mutation lives on the MCP connector or in
+    the Spekit UI. Delete is not available on either programmatic surface.
+cross_links:
+  authentication: authentication/spekit-authentication.yml
+  scopes: scopes/spekit-scopes.yml
+  errors: errors/spekit-problem-types.yml
+  lifecycle: lifecycle/spekit-lifecycle.yml
+  rate_limits: rate-limits/spekit-rate-limits.yml
+  data_model: data-model/spekit-data-model.yml
+  mcp: mcp/spekit-mcp.yml

@@ -1,0 +1,81 @@
+generated: '2026-08-14'
+method: searched
+source: openapi/spekit-openapi.yml
+docs: https://help.spekit.com/hc/en-us/articles/31041891807643-Spekit-API-Overview
+format: none
+format_note: >-
+  Spekit publishes no error contract for the REST API. Every one of the five operations declares
+  exactly one response — 200 — with no 4xx or 5xx response objects and no error schema in
+  components. There is no RFC 9457 application/problem+json, no vendor error envelope, and no
+  error-code reference page in the help center. The problems below are therefore recorded from
+  the operator documentation and from live probes, not derived from the spec, and each says which.
+spec_declared_responses:
+  '200': 5
+  '4xx': 0
+  '5xx': 0
+problems:
+- status: 429
+  title: Too Many Requests
+  surface: REST API
+  condition: >-
+    Sustained requests above 30 requests per 10 seconds. Short bursts are tolerated; sustained
+    excess is rejected.
+  remediation: Implement exponential backoff. No Retry-After or RateLimit-* header is published, so backoff cannot be driven by a server signal.
+  in_spec: false
+  method: searched
+  source: https://help.spekit.com/hc/en-us/articles/31041891807643-Spekit-API-Overview
+- status: 401
+  title: Unauthenticated
+  surface: REST API
+  condition: >-
+    Missing or malformed Authorization header, or an expired/revoked token. The header must carry
+    the literal "Token " prefix; tokens have an admin-set expiry from one week to never.
+  remediation: Regenerate the token in the Spekit Web App under Settings then API Tokens (Account Admins only) and re-send with the "Token " prefix.
+  in_spec: false
+  method: searched
+  source: https://help.spekit.com/hc/en-us/articles/31041891807643-Spekit-API-Overview
+  note: Shape of the 401 body is undocumented and could not be observed without a token.
+- status: 401
+  type: invalid_token
+  title: Authentication failed
+  surface: MCP connector
+  condition: The bearer token is absent, invalid, expired, or no longer recognized by the server.
+  envelope: '{"error": "invalid_token", "error_description": "..."}'
+  headers:
+    WWW-Authenticate: 'Bearer error="invalid_token", error_description="...", resource_metadata="https://mcp.spekit.co/.well-known/oauth-protected-resource/mcp"'
+  remediation: >-
+    Clear authentication tokens in the MCP client and reconnect; the client should re-register
+    dynamically and obtain new tokens. Access tokens live 24 hours, refresh tokens 30 days and
+    rotate on every use.
+  in_spec: false
+  method: probed
+  source: 'POST https://mcp.spekit.co/mcp — observed 2026-08-14, HTTP 401'
+  standards: [RFC 6750, RFC 9728]
+- status: 403
+  title: Permission denied
+  surface: MCP connector
+  condition: >-
+    The signed-in user's Spekit role does not permit the action. A viewer-only user cannot create
+    or change content through an AI tool, even by asking. Enforced at the backend API layer.
+  remediation: Check the role in Spekit or contact a Spekit admin. Access cannot be widened from the AI tool.
+  in_spec: false
+  method: searched
+  source: https://help.spekit.com/hc/en-us/articles/53991371723035-Troubleshooting-Spekit-MCP
+- status: null
+  title: Write validation failure
+  surface: MCP connector
+  condition: A write tool is called with malformed or invalid input.
+  behaviour: >-
+    Spekit states the connector returns "a real error that describes what went wrong" rather than
+    a generic failure, that writes are validated server-side before anything is saved, and that a
+    failed write leaves no partial content behind. HTML submitted through write tools is passed
+    through server-side allowlist sanitization. The concrete status codes and error identifiers
+    are not published.
+  in_spec: false
+  method: searched
+  source: https://help.spekit.com/hc/en-us/articles/53992263664539-Spekit-MCP-FAQs
+gaps:
+- The OpenAPI declares no 4xx/5xx responses, so a generated client has no error types at all.
+- No machine-readable error code registry, and no error reference page in the help center.
+- No RFC 9457 problem+json on either surface.
+- No documented body shape for the REST 401/429.

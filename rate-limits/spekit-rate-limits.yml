@@ -1,0 +1,46 @@
+generated: '2026-08-14'
+method: searched
+source: https://help.spekit.com/hc/en-us/articles/31041891807643-Spekit-API-Overview
+sources:
+- https://help.spekit.com/hc/en-us/articles/31041891807643-Spekit-API-Overview
+- https://help.spekit.com/hc/en-us/articles/53991678945435-Spekit-MCP-Data-Privacy-Security-FAQs
+rate_limits:
+- surface: REST API
+  base_url: https://api.spekit.co
+  scope: per-account (the API token's organization)
+  limit: 30
+  window: 10 seconds
+  burst: >-
+    Short bursts are tolerated; sustained requests above the threshold are rejected. Spekit's
+    guidance is to implement exponential backoff.
+  status_on_exhaustion: 429
+  status_name: Too Many Requests
+  response_headers: []
+  response_headers_note: >-
+    NOT DOCUMENTED and NOT OBSERVABLE. Spekit publishes no X-RateLimit-* / RateLimit-* / Retry-After
+    header contract, and the OpenAPI declares only a 200 response per operation — there is no 429
+    response object in the spec at all. Every operation requires a token, so the limit could not be
+    observed on a live unauthenticated response. An agent therefore has the documented number but
+    no runtime signal: it cannot read remaining quota or a reset time, and must infer backoff from
+    the bare 429 status.
+  documented: true
+  source: https://help.spekit.com/hc/en-us/articles/31041891807643-Spekit-API-Overview
+- surface: MCP connector
+  endpoint: https://mcp.spekit.co/mcp
+  scope: per-session
+  limit: null
+  window: null
+  status_on_exhaustion: null
+  documented: false
+  documented_note: >-
+    Spekit confirms the connector is rate limited "per session" with quota enforcement validated
+    across service instances, but publishes no number, window or exhaustion behaviour.
+  source: https://help.spekit.com/hc/en-us/articles/53991678945435-Spekit-MCP-Data-Privacy-Security-FAQs
+pagination_caps:
+- surface: REST API
+  parameter: page_size
+  default: 50
+  maximum: 100
+  note: Applies to all five collection operations; caps result volume independently of the request-rate limit.
+limit_count: 2
+checked: '2026-08-14'

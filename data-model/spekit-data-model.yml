@@ -1,0 +1,214 @@
+generated: '2026-08-14'
+method: derived
+source: openapi/spekit-openapi.yml
+sources:
+- openapi/spekit-openapi.yml
+- https://help.spekit.com/hc/en-us/articles/53977808268699-Spekit-MCP-Overview-Setup
+note: >-
+  Two disjoint models, matching the two disjoint surfaces. The REST entities below are derived
+  strictly from components.schemas in the published OpenAPI. The MCP entities are named from
+  Spekit's own tool documentation — no schema is published for them and tools/list is auth-gated,
+  so their fields are recorded only where Spekit states them in prose, and are marked as such.
+domains:
+- name: analytics
+  surface: REST
+  entities: [User, TeamRole, Searches, SpekViews, SpekDetails, TermViews, TermReactions, UserActivity]
+- name: content
+  surface: MCP
+  entities: [Topic, Spek, Asset, ContentTemplate, StyleGuide]
+- name: deals
+  surface: MCP
+  entities: [Company, DealRoom]
+entities:
+- name: User
+  surface: REST
+  source_schema: '#/components/schemas/User'
+  identifier: {field: id, type: string, format: uuid}
+  fields: [id, first_name, last_name, email, is_active, created_on, teams]
+  required: [email, first_name, teams]
+  note: The one entity every analytics record embeds. Returned in full, never as a reference.
+- name: TeamRole
+  surface: REST
+  source_schema: '#/components/schemas/TeamRole'
+  fields: [team, role]
+  required: [team, role]
+  read_only: true
+  note: Team name and role as strings, not ids — team membership is not independently addressable.
+- name: Searches
+  surface: REST
+  source_schema: '#/components/schemas/Searches'
+  fields: [user, keywords, created_on, source]
+  required: [user, keywords, source]
+- name: SpekDetails
+  surface: REST
+  source_schema: '#/components/schemas/SpekDetails'
+  identifier: {field: id, type: string}
+  fields: [id, link, type_short, label, deleted]
+  required: [id, link, type_short, label, deleted]
+  note: >-
+    The only representation of a Spek on the REST surface — an id, a link, a short type and a
+    label. The body is never exposed by REST; reading a Spek body requires the MCP connector.
+- name: TermViews
+  surface: REST
+  source_schema: '#/components/schemas/TermViews'
+  identifier: {field: id, type: string}
+  fields: [id, source, user_action, created_on]
+  required: [id, source, user_action]
+- name: SpekViews
+  surface: REST
+  source_schema: '#/components/schemas/SpekViews'
+  fields: [user, spek, view, associated_teams]
+  required: [user, spek, view, associated_teams]
+- name: TermReactions
+  surface: REST
+  source_schema: '#/components/schemas/TermReactions'
+  fields: [user, spek_name, spek_link, spek_type, created_on, reaction]
+  required: [user, spek_name, spek_link, spek_type, reaction]
+  note: >-
+    Denormalized — carries spek_name/spek_link/spek_type as flat strings instead of $ref'ing
+    SpekDetails, so a reaction cannot be joined to a view by spek id.
+- name: UserActivity
+  surface: REST
+  source_schema: '#/components/schemas/UserActivity'
+  fields: [user, created_on, activity_type, activity_id, ip]
+  required: [user, activity_type, activity_id, ip]
+  polymorphic: true
+  polymorphic_note: >-
+    activity_type is one of 21 enumerated values and activity_id points at the underlying record,
+    but the per-type payload shape is documented ONLY in the operation description prose — it is
+    not modelled in components.schemas, so a generated client gets an opaque id and must consult
+    the docs to interpret it.
+  activity_types: [api_auth_token_generated, api_auth_token_revoked, asset view, files_uploaded, flow_completion, flow_created, flow_start, knowledge_check_attempt, knowledge_check_created, knowledge_check_question_attempt, marked_asset_read, marked_spek_read, reaction, recommendation, search, spek view, spek_created, spotlight_completion, spotlight_created, team_created, topic_created]
+- name: Topic
+  surface: MCP
+  schema_published: false
+  fields_stated: [id, name, parents, subtopics]
+  note: Hierarchical, returned one level at a time. Create-only through the connector — cannot be renamed, edited or deleted.
+- name: Spek
+  surface: MCP
+  schema_published: false
+  fields_stated: [id, title, body, topic assignments]
+  note: The unit of governed content. Updatable through the connector (title, body, topic assignment). Not deletable.
+- name: Asset
+  surface: MCP
+  schema_published: false
+  fields_stated: [id, text contents]
+  note: Imported or synced file (PDF, slide deck, external document); the connector returns its extracted text.
+- name: ContentTemplate
+  surface: MCP
+  schema_published: false
+  fields_stated: [body, fill instructions]
+  note: Company-scoped layout used to author a new Spek.
+- name: StyleGuide
+  surface: MCP
+  schema_published: false
+  note: Spekit design-system rules, read before authoring. Singleton per company. Brand Studio styling is not applied to connector-created content.
+- name: Company
+  surface: MCP
+  schema_published: false
+  fields_stated: [id, name]
+  note: Buyer-account record. Create-only — cannot be renamed, edited or deleted through the connector.
+- name: DealRoom
+  surface: MCP
+  schema_published: false
+  fields_stated: [id, name, share link, internal link]
+  note: >-
+    Buyer-facing room. Create-only. External sharing cannot be enabled or even read through the
+    connector — sharing status must be checked in Spekit directly.
+relationships:
+- from: User
+  to: TeamRole
+  kind: has_many
+  via: teams
+  surface: REST
+  evidence: User.teams is an array of $ref TeamRole
+- from: Searches
+  to: User
+  kind: belongs_to
+  via: user
+  surface: REST
+  evidence: $ref User
+- from: SpekViews
+  to: User
+  kind: belongs_to
+  via: user
+  surface: REST
+  evidence: $ref User
+- from: SpekViews
+  to: SpekDetails
+  kind: has_one
+  via: spek
+  surface: REST
+  evidence: allOf $ref SpekDetails, readOnly
+- from: SpekViews
+  to: TermViews
+  kind: has_one
+  via: view
+  surface: REST
+  evidence: allOf $ref TermViews, readOnly
+- from: TermReactions
+  to: User
+  kind: belongs_to
+  via: user
+  surface: REST
+  evidence: $ref User
+- from: TermReactions
+  to: SpekDetails
+  kind: implied
+  via: spek_link
+  surface: REST
+  evidence: flattened spek_name/spek_link/spek_type strings — no $ref, no id, join is by link only
+- from: UserActivity
+  to: User
+  kind: belongs_to
+  via: user
+  surface: REST
+  evidence: $ref User
+- from: Topic
+  to: Topic
+  kind: has_many
+  via: subtopics
+  surface: MCP
+  evidence: List topics returns each topic with its direct subtopics; Get topic returns parents and subtopics
+- from: Spek
+  to: Topic
+  kind: has_many
+  via: topic assignments
+  surface: MCP
+  evidence: Create content files a Spek under one or more topics; Update content can change topic assignment
+- from: Spek
+  to: ContentTemplate
+  kind: created_from
+  via: Create content from template
+  surface: MCP
+  evidence: Create content from template tool
+- from: DealRoom
+  to: Company
+  kind: belongs_to
+  via: parent company
+  surface: MCP
+  evidence: '"A deal room sits under a company, so create the company first if it does not exist yet."'
+- from: Spek
+  to: DealRoom
+  kind: scoped_to
+  via: Create deal room content
+  surface: MCP
+  evidence: >-
+    Create deal room content makes a Spek inside a specific deal room, tied to that deal's company
+    context. An existing knowledge-base Spek cannot be attached — only new content can be created there.
+pagination_wrappers:
+- PaginatedSearchesList
+- PaginatedSpekViewsList
+- PaginatedTermReactionsList
+- PaginatedUserActivityList
+- PaginatedUserList
+id_conventions:
+  user: UUID
+  spek: opaque string
+  view: opaque string
+  note: No id prefixes are used; ids are not self-describing across types.
+gaps:
+- The REST and MCP models share no addressable identifier — a Spek id from an MCP read cannot be joined to REST analytics, which returns its own SpekDetails.id with no stated equivalence.
+- TermReactions is denormalized against SpekViews, so reactions and views cannot be joined by spek id.
+- UserActivity payloads are prose-documented only, not modelled.
+- No MCP entity has a published schema; every field list above is stated in prose, not machine-readable.

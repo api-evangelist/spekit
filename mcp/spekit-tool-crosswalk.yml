@@ -1,0 +1,95 @@
+generated: '2026-08-14'
+method: derived
+source: mcp/spekit-mcp.yml + openapi/spekit-openapi.yml
+note: >-
+  Spekit's two programmatic surfaces do not overlap at all. The public REST API (5 operations,
+  all GET) is a read-only ANALYTICS/reporting surface — users, searches, spek views, spek
+  reactions, user activities — built for BI dashboards and user syncs. The MCP connector (19
+  tools) is a CONTENT surface — search, read, author and update Speks, topics, templates,
+  companies and Deal Rooms. Not one MCP tool has a backing public REST operation, and not one
+  REST operation has a corresponding MCP tool. Spekit's own MCP FAQ states the connector's tools
+  "call the same backend API as the website and extension", meaning the tools are bound to
+  INTERNAL first-party endpoints that are not part of the published api.spekit.co/v1 contract.
+  The crosswalk is therefore empty by measurement, not by omission — that disjointness is the
+  finding.
+surfaces:
+  openapi:
+    file: openapi/spekit-openapi.yml
+    source: https://api.spekit.co/api-schema/
+    base_url: https://api.spekit.co
+    operations: 5
+    methods: [GET]
+    auth: apiKey header Authorization with required "Token " prefix
+    gated: false
+  mcp:
+    url: https://mcp.spekit.co/mcp
+    tools: 19
+    auth: OAuth 2.0 authorization code + PKCE (S256), dynamic client registration
+    gated: true
+    gated_note: >-
+      tools/list returns 401 invalid_token anonymously, so the live inputSchema per tool could
+      not be introspected. Tool names below are the provider's published list, not guesses.
+  graphql:
+    present: false
+crosswalk: []
+mcp_only:
+- tool: Get authenticated user
+  reason: No public REST /me or identity operation is published; the REST surface has no self endpoint.
+- tool: List topics
+  reason: Topics are not exposed by the public REST API (analytics-only surface).
+- tool: Get topic
+  reason: Topics are not exposed by the public REST API.
+- tool: Search content
+  reason: >-
+    REST publishes search ANALYTICS (v1_analytics_searches_list — who searched for what), not a
+    content-search operation. Reporting on searches is not the same capability as running one.
+- tool: List topic content
+  reason: Content listing is not exposed by the public REST API.
+- tool: Get content
+  reason: Spek bodies are not exposed by the public REST API.
+- tool: Get asset content
+  reason: File-asset text extraction is not exposed by the public REST API.
+- tool: Get content style guide
+  reason: Design-system rules are not exposed by the public REST API.
+- tool: List content templates
+  reason: Templates are not exposed by the public REST API.
+- tool: Get content template
+  reason: Templates are not exposed by the public REST API.
+- tool: List companies
+  reason: Company records are not exposed by the public REST API.
+- tool: List deal rooms
+  reason: Deal Rooms are not exposed by the public REST API.
+- tool: Create topic
+  reason: The public REST API supports GET only — it publishes no write operations at all.
+- tool: Create content
+  reason: The public REST API supports GET only.
+- tool: Create content from template
+  reason: The public REST API supports GET only.
+- tool: Update content
+  reason: The public REST API supports GET only.
+- tool: Create company
+  reason: The public REST API supports GET only.
+- tool: Create deal room
+  reason: The public REST API supports GET only.
+- tool: Create deal room content
+  reason: The public REST API supports GET only.
+rest_only:
+- capability: User intelligence
+  operations: [v1_users_list]
+  note: Organization users with account creation date, team memberships and roles. No MCP tool lists users; Spekit states user management is deliberately out of connector scope.
+- capability: Search analytics
+  operations: [v1_analytics_searches_list]
+  note: Who searched, the keyword, the source and the timestamp. Reporting only.
+- capability: Content engagement analytics
+  operations: [v1_analytics_speks_views_list, v1_analytics_speks_reactions_list]
+  note: Spek views and reactions with user and spek detail. No MCP equivalent.
+- capability: Activity feed
+  operations: [v1_analytics_user_activities_list]
+  note: 21 activity types across topics, search, teams, files, speks, flows, spotlights, knowledge checks, AI recommendations and API-token lifecycle. No MCP equivalent.
+coverage:
+  mcp_tools_named: 19
+  mcp_tools_bound_to_rest: 0
+  mcp_only: 19
+  rest_operations_total: 5
+  rest_operations_with_a_tool: 0
+  overlap_ratio: 0.0

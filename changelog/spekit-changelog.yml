@@ -1,0 +1,41 @@
+generated: '2026-08-14'
+method: probed
+source: https://spekit.canny.io/changelog
+scheme: null
+current_version: v1 (REST API URI path)
+public: false
+gated: true
+gating_detail: >-
+  Spekit runs a changelog and a roadmap, and links both from its own support documentation, but
+  neither is publicly readable. https://spekit.canny.io/changelog returns HTTP 200 whose body is
+  only a login wall — "Log in with your admin account to access this page" — and
+  https://spekit.canny.io/feature-requests is the same wall requiring a Spekit account. There is
+  no RSS/Atom feed, no anonymous JSON, and no release-notes section in the Zendesk help center
+  (36 sections enumerated, none of them release notes). A dated change history therefore exists
+  but cannot be read, cited, or diffed by anyone who is not already a Spekit customer.
+entries: []
+entry_count: 0
+proxy_signals:
+- kind: help-center-article-timestamps
+  detail: >-
+    The only public dating available is Zendesk article updated_at. The MCP documentation set was
+    created and last updated in early August 2026 (Overview & Setup updated 2026-08-06,
+    Troubleshooting and FAQs 2026-08-05), and the Spekit API Overview was last updated
+    2026-01-28. That brackets when each surface changed but is not a changelog.
+  source: https://help.spekit.com/api/v2/help_center/en-us/articles/<id>.json
+- kind: marketing-announcement
+  detail: Site-wide banner announcing "GTM Knowledge Engine 2.0 + MCP Launch".
+  source: https://www.spekit.com/
+roadmap:
+  url: https://spekit.canny.io/
+  public: false
+  note: Canny board; requires a Spekit login. Statuses used are Open, Planned, In Progress, Complete.
+evidence:
+- url: https://spekit.canny.io/changelog
+  status: 200
+  note: 200 body is a login wall, not a changelog
+  checked: '2026-08-14'
+- url: https://spekit.canny.io/feature-requests
+  status: 200
+  note: 200 body is a login wall
+  checked: '2026-08-14'

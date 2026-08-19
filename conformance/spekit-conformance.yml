@@ -1,25 +1,103 @@
-generated: '2026-07-21'
+generated: '2026-08-14'
 method: searched
 source: https://www.spekit.com/security
+sources:
+- https://www.spekit.com/security
+- https://www.spekit.com/vulnerability-disclosure-program
+- https://api.spekit.co/api-schema/
+- https://mcp.spekit.co/.well-known/oauth-authorization-server
+- https://mcp.spekit.co/.well-known/oauth-protected-resource/mcp
+- https://help.spekit.com/hc/en-us/articles/53991678945435-Spekit-MCP-Data-Privacy-Security-FAQs
 standards:
-  - id: soc2-type-ii
-    conforms: true
-    evidence: >-
-      SOC 2 Type II audit completed (auditor Dansa D'Arata Soucia LLP); verified
-      secure SDLC, access controls, logging/monitoring/alerting, encryption
-      controls, external penetration testing, and DR/backup procedures.
-      https://www.spekit.com/blog/spekit-successfully-completes-soc-2-type-ii-audit
-  - id: salesforce-security-review
-    conforms: true
-    evidence: Passed the Salesforce Security Review as a certified AppExchange vendor.
-  - id: iso-27001
-    conforms: false
-  - id: hipaa
-    conforms: false
-  - id: gdpr
-    conforms: false
-    evidence: >-
-      Privacy Policy references data-processing commitments but no ISO 27001,
-      HIPAA, or explicit GDPR certification is published.
-  - id: pci-dss
-    conforms: false
+- id: soc2-type-ii
+  conforms: true
+  evidence: >-
+    SOC 2 Type II audit completed (auditor Dansa D'Arata Soucia LLP); verified secure SDLC,
+    access controls, logging/monitoring/alerting, encryption controls, external penetration
+    testing, and DR/backup procedures. Reaffirmed in the 2026 MCP security FAQ as a company-wide
+    report covering the platform and security controls.
+    https://www.spekit.com/blog/spekit-successfully-completes-soc-2-type-ii-audit
+- id: salesforce-security-review
+  conforms: true
+  evidence: Passed the Salesforce Security Review as a certified AppExchange vendor.
+- id: openapi-3
+  conforms: true
+  evidence: >-
+    OpenAPI 3.0.3 document published at https://api.spekit.co/api-schema/ and rendered in Swagger
+    UI at https://api.spekit.co/docs/. Machine-readable, parses, 5 operations, securitySchemes
+    defined and applied per operation.
+- id: oauth2-authorization-code
+  conforms: true
+  evidence: >-
+    MCP connector uses OAuth 2.0 authorization code with refresh tokens; grant_types_supported
+    ["authorization_code","refresh_token"] in the authorization-server metadata.
+- id: rfc7636-pkce
+  conforms: true
+  evidence: code_challenge_methods_supported ["S256"]; Spekit states PKCE (S256) is required on every authorization request.
+- id: rfc8414-oauth-as-metadata
+  conforms: true
+  evidence: https://mcp.spekit.co/.well-known/oauth-authorization-server returns 200 application/json with issuer, authorization_endpoint, token_endpoint, registration_endpoint.
+- id: rfc9728-oauth-protected-resource-metadata
+  conforms: true
+  evidence: >-
+    https://mcp.spekit.co/.well-known/oauth-protected-resource/mcp returns 200 with resource,
+    authorization_servers, scopes_supported, bearer_methods_supported; the 401 WWW-Authenticate
+    header advertises that exact resource_metadata URL.
+- id: rfc7591-dynamic-client-registration
+  conforms: true
+  evidence: registration_endpoint https://mcp.spekit.co/register; client_id_metadata_document_supported true. Spekit's setup docs require a client that supports dynamic registration.
+- id: rfc6750-bearer-token
+  conforms: true
+  evidence: bearer_methods_supported ["header"]; observed 401 carries a conformant WWW-Authenticate Bearer challenge with error and error_description.
+- id: mcp
+  conforms: true
+  evidence: >-
+    Remote streamable-HTTP MCP server at https://mcp.spekit.co/mcp; JSON-RPC tools/list answered
+    (401 without credentials). Tools carry read-only/destructive annotations that AI clients use
+    to gate write confirmation.
+- id: scim2
+  conforms: true
+  evidence: SCIM provisioning connectors documented for Okta, Entra ID (Azure) and OneLogin.
+- id: saml2
+  conforms: true
+  evidence: SAML SSO connection guides published for Okta, Entra ID (Azure) and OneLogin.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: No /.well-known/security.txt on any Spekit host, though a full vulnerability disclosure policy is published at https://www.spekit.com/vulnerability-disclosure-program.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: No application/problem+json anywhere; the OpenAPI declares no 4xx/5xx responses at all.
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: No Sunset/Deprecation header support and no deprecation policy published.
+- id: ratelimit-headers
+  conforms: false
+  evidence: A 30 requests / 10 seconds limit is documented in prose, but no RateLimit-*/X-RateLimit-*/Retry-After header contract is published.
+- id: a2a
+  conforms: false
+  evidence: No agent card at /.well-known/agent-card.json or /.well-known/agent.json on any host (404, or an SPA HTML shell on api./app.spekit.co).
+- id: asyncapi
+  conforms: false
+  evidence: No event, streaming or webhook API surface is published. Dashboard scheduled deliveries can target a webhook destination, but that is a reporting export, not an event contract.
+- id: iso-27001
+  conforms: unverified
+  evidence: >-
+    Matched once in the Drata-hosted trust center body and not reproducible (trust.spekit.com is
+    Cloudflare bot-challenged, 403). Spekit's own marketing, security page and llms.txt claim
+    SOC 2 Type II and GDPR-aligned practices only. See security/spekit-trust-center.yml.
+- id: gdpr
+  conforms: partial
+  evidence: >-
+    Spekit states "GDPR-aligned practices" in its llms.txt and operates a DPA with contractual
+    no-training commitments for third-party generative models. No certification is published.
+- id: hipaa
+  conforms: false
+- id: pci-dss
+  conforms: false
+- id: fedramp
+  conforms: false
+compliance_program:
+  published: true
+  url: https://www.spekit.com/security
+  trust_center: https://trust.spekit.com/
+  note: Trust center is browser-only (Cloudflare challenge), see security/spekit-trust-center.yml.

@@ -1,0 +1,92 @@
+generated: '2026-08-14'
+method: searched
+source: openapi/spekit-openapi.yml
+docs: https://help.spekit.com/hc/en-us/articles/31041891807643-Spekit-API-Overview
+sources:
+- https://api.spekit.co/api-schema/
+- https://help.spekit.com/hc/en-us/articles/31041891807643-Spekit-API-Overview
+- https://help.spekit.com/hc/en-us/articles/53991678945435-Spekit-MCP-Data-Privacy-Security-FAQs
+- https://mcp.spekit.co/.well-known/oauth-authorization-server
+- https://mcp.spekit.co/.well-known/oauth-protected-resource/mcp
+note: >-
+  Spekit runs two independent auth models on two independent surfaces. The REST API
+  (api.spekit.co) uses a long-lived admin-issued static token. The MCP connector
+  (mcp.spekit.co) uses OAuth 2.0 authorization code with PKCE and dynamic client registration,
+  with no machine-to-machine path at all. A credential for one does not work on the other.
+summary:
+  types:
+  - apiKey
+  - oauth2
+  api_key_in:
+  - header
+  oauth2_flows:
+  - authorizationCode
+schemes:
+- name: tokenAuth
+  type: apiKey
+  in: header
+  parameter: Authorization
+  surface: REST API (https://api.spekit.co)
+  description: Token-based authentication with required prefix "Token"
+  example_header: 'Authorization: Token <your-api-token>'
+  issuance:
+    who: Spekit Account Admins only
+    where: Spekit Web App, Settings then API Tokens
+    steps:
+    - Enter a description for the token (e.g. "Tableau Reporting Sync").
+    - Set a custom expiration period, from 1 week through "Never Expire".
+    - Click Generate new token.
+    - Copy the token immediately — it is shown once and cannot be retrieved later.
+    revocable: true
+    auditable: >-
+      Token generation and revocation are themselves activity types on the API — filter
+      v1_analytics_user_activities_list by api_auth_token_generated / api_auth_token_revoked.
+  sources:
+  - openapi/spekit-openapi.yml
+- name: mcp-oauth2
+  type: oauth2
+  surface: MCP connector (https://mcp.spekit.co/mcp)
+  issuer: https://mcp.spekit.co/
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://mcp.spekit.co/authorize
+    tokenUrl: https://mcp.spekit.co/token
+    pkce: required (S256)
+    scopes: [openid, profile, email, read]
+  registration_endpoint: https://mcp.spekit.co/register
+  dynamic_client_registration: true
+  client_id_metadata_document_supported: true
+  token_endpoint_auth_methods_supported: [client_secret_post, client_secret_basic]
+  grant_types_supported: [authorization_code, refresh_token]
+  bearer_methods_supported: [header]
+  client_credentials: false
+  client_credentials_note: >-
+    Spekit states explicitly there is no machine-to-machine path using a Client ID and secret —
+    every connection requires an interactive sign-in and consent with the user's own Spekit login.
+  access_token_lifetime: 24 hours
+  refresh_token_lifetime: 30 days, rotating on every use; each refresh cancels the prior token
+  token_format: RS256-signed JWT, verified against the identity provider's published JWKS with issuer and audience claim checks
+  session_state: encrypted at rest (Fernet) in the session store
+  revocation: users or org admins can disconnect at any time, like any other OAuth grant
+  authorization_model: >-
+    Delegated only. The connector grants no new access — every call runs as the signed-in user
+    within that user's existing Spekit role, enforced at the backend API layer. Scope cannot be
+    narrowed to specific topics or deal rooms, and there is no forced read-only mode independent
+    of role.
+  discovery:
+  - path: /.well-known/oauth-authorization-server
+    rfc: RFC 8414
+    file: ../well-known/spekit-mcp-oauth-authorization-server.json
+  - path: /.well-known/oauth-protected-resource/mcp
+    rfc: RFC 9728
+    file: ../well-known/spekit-mcp-oauth-protected-resource.json
+    advertised_via: WWW-Authenticate resource_metadata on the 401
+  sources:
+  - https://mcp.spekit.co/.well-known/oauth-authorization-server
+  - https://help.spekit.com/hc/en-us/articles/53991678945435-Spekit-MCP-Data-Privacy-Security-FAQs
+sso:
+  note: >-
+    End-user authentication into the Spekit web app supports SAML SSO and SCIM provisioning
+    with Okta, Entra ID (Azure) and OneLogin. This is workforce identity, not API credentialing —
+    neither surface above accepts an SSO assertion directly.
+  docs: https://help.spekit.com/hc/en-us/articles/9923374365723-SSO-Overview-Configuration

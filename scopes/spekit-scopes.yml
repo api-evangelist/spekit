@@ -1,0 +1,50 @@
+generated: '2026-08-14'
+method: probed
+source: https://mcp.spekit.co/.well-known/oauth-authorization-server
+sources:
+- https://mcp.spekit.co/.well-known/oauth-authorization-server
+- https://mcp.spekit.co/.well-known/oauth-protected-resource/mcp
+note: >-
+  The OAuth surface is the MCP connector, not the REST API — the published OpenAPI declares only
+  an apiKey scheme and no oauth2 flows, so derive-oauth-scopes.py found nothing. These scopes come
+  from Spekit's own RFC 8414 and RFC 9728 discovery documents, fetched anonymously. Spekit
+  publishes no scopes/permissions reference page in its help center; the scope set below is what
+  the authorization server itself advertises.
+schemes:
+- name: mcp-oauth2
+  source: https://mcp.spekit.co/.well-known/oauth-authorization-server
+  issuer: https://mcp.spekit.co/
+  resource: https://mcp.spekit.co/mcp
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://mcp.spekit.co/authorize
+    tokenUrl: https://mcp.spekit.co/token
+    registrationUrl: https://mcp.spekit.co/register
+    code_challenge_methods: [S256]
+scopes:
+- scope: openid
+  description: OpenID Connect — issue an ID token identifying the signing-in Spekit user.
+  flows: [authorizationCode]
+  sources: [https://mcp.spekit.co/.well-known/oauth-authorization-server]
+- scope: profile
+  description: Basic profile claims for the authenticated Spekit user.
+  flows: [authorizationCode]
+  sources: [https://mcp.spekit.co/.well-known/oauth-authorization-server]
+- scope: email
+  description: Email address of the authenticated Spekit user.
+  flows: [authorizationCode]
+  sources: [https://mcp.spekit.co/.well-known/oauth-authorization-server]
+- scope: read
+  description: >-
+    The only Spekit-specific scope advertised. Note the asymmetry — the connector ships 7 write
+    tools (create topic/content/company/deal room, create content from template, update content,
+    create deal room content) but the authorization server advertises no corresponding write
+    scope. Write authority is not carried in the OAuth scope at all; it is decided server-side
+    from the signed-in user's Spekit role, and Spekit states there is no setting that forces the
+    connector read-only independent of that role. A client cannot request a read-only grant.
+  flows: [authorizationCode]
+  sources: [https://mcp.spekit.co/.well-known/oauth-authorization-server]
+scope_count: 4
+docs: null
+docs_note: No scopes or permissions reference page is published; scopes are only discoverable from the AS metadata document.
+checked: '2026-08-14'

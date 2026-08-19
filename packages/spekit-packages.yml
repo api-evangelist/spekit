@@ -1,0 +1,81 @@
+generated: '2026-08-14'
+method: searched
+source: >-
+  Registry searches on npm, PyPI, RubyGems, crates.io, Packagist and NuGet, plus the Spekit
+  GitHub organization (github.com/spekit-co) and the Spekit API and MCP documentation.
+package_count: 0
+official_sdk_count: 0
+packages: []
+finding: >-
+  Spekit ships NO first-party client library in any public registry, and no CDN-distributed
+  browser SDK. The API Overview help article documents raw HTTP with a token header and links only
+  to the Swagger UI; there is no SDK, quickstart snippet or code sample in any language. Consumers
+  of the REST API hand-roll HTTP.
+registry_probes:
+- registry: npm
+  query: https://registry.npmjs.org/-/v1/search?text=spekit
+  results: 0
+  version: null
+  published: null
+- registry: pypi
+  query: https://pypi.org/pypi/spekit/json
+  http_status: 404
+  version: null
+  published: null
+- registry: rubygems
+  query: https://rubygems.org/api/v1/gems/spekit.json
+  http_status: 404
+  version: null
+  published: null
+- registry: crates.io
+  query: https://crates.io/api/v1/crates?q=spekit
+  results: 0
+  version: null
+  published: null
+- registry: nuget
+  query: https://azuresearch-usnc.nuget.org/query?q=spekit
+  results: 0
+  version: null
+  published: null
+- registry: packagist
+  query: https://packagist.org/search.json?q=spekit
+  results: 0
+  version: null
+  published: null
+  note: Matches returned are unrelated (Spektrix, speniti), not Spekit.
+github_org:
+  url: https://github.com/spekit-co
+  name: Spekit, Inc
+  public_repos: 4
+  contact: developer@spekit.co
+  first_party_libraries: 0
+  note: >-
+    All four public repositories are forks of third-party projects Spekit uses internally, not
+    Spekit client libraries — sfdclib (Salesforce metadata/tooling, Python), jest-chrome (Chrome
+    API mock, TypeScript), axios-fetch-adapter (TypeScript), dd-trace-py (Datadog APM). None
+    wraps the Spekit API. Version/published fields are therefore null throughout: there is no
+    Spekit package to date.
+  version: null
+  published: null
+distribution_surfaces:
+- kind: browser-extension
+  name: Spekit Chrome extension
+  url: https://chromewebstore.google.com/detail/spekit/nbphjjmibhopfgkkbpoggemjnihnchhk
+  registry: chrome-web-store
+  official: true
+  version: null
+  published: null
+  note: >-
+    An end-user product, not a developer SDK, and the Chrome Web Store exposes no unauthenticated
+    version metadata endpoint — recorded as checked-with-nothing-to-record rather than omitted.
+- kind: mcp-connector
+  name: Spekit MCP
+  url: https://mcp.spekit.co/mcp
+  registry: none
+  official: true
+  version: null
+  published: null
+  note: >-
+    Remote HTTP endpoint only — there is no npx/stdio package to install, so there is no registry
+    entry and no publish date. See mcp/spekit-mcp.yml deployment.mode = remote.
+checked: '2026-08-14'

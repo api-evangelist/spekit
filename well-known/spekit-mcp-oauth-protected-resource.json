@@ -1,0 +1,1 @@
+{"resource":"https://mcp.spekit.co/mcp","authorization_servers":["https://mcp.spekit.co/"],"scopes_supported":["openid","profile","email","read"],"bearer_methods_supported":["header"],"resource_name":"Spekit MCP"}

@@ -1,0 +1,34 @@
+generated: '2026-08-14'
+method: generated
+source: >-
+  openapi/spekit-openapi.yml (REST operationIds verified verbatim against the spec) and
+  mcp/spekit-mcp.yml (MCP tool names verbatim from
+  https://help.spekit.com/hc/en-us/articles/53977808268699-Spekit-MCP-Overview-Setup).
+note: >-
+  No provider-published Agent Skills or AGENTS.md was found on any Spekit host, so these are
+  generated. Skills are split by surface because the two surfaces share nothing — the REST API is
+  GET-only analytics, the MCP connector is the only read/write content surface.
+skills:
+- file: spekit-enablement-analytics-pull.md
+  name: Pull Spekit enablement analytics
+  surface: rest
+  api: openapi/spekit-openapi.yml
+  operations:
+  - v1_users_list
+  - v1_analytics_searches_list
+  - v1_analytics_speks_views_list
+  - v1_analytics_speks_reactions_list
+  - v1_analytics_user_activities_list
+- file: spekit-api-token-audit.md
+  name: Audit Spekit API token lifecycle
+  surface: rest
+  api: openapi/spekit-openapi.yml
+  operations:
+  - v1_analytics_user_activities_list
+  - v1_users_list
+- file: spekit-mcp-governed-content.md
+  name: Work with governed Spekit content over MCP
+  surface: mcp
+  api: mcp/spekit-mcp.yml
+  endpoint: https://mcp.spekit.co/mcp
+  tools: 19
