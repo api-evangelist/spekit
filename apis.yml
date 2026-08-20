@@ -44,6 +44,20 @@ created: '2026-07-17'
 modified: '2026-08-14'
 tags:
 - Company
+- Software-as-a-Service
+- Sales Enablement
+- Revenue Enablement
+- Digital Adoption
+- Knowledge-Management
+- MCP
+- Artificial Intelligence
+- Analytics
+- Sales
+- Content Management
+- Agents
+- Authentication
+tags_raw:
+- Company
 - Saas
 - Sales Enablement
 - Revenue Enablement
@@ -74,6 +88,11 @@ apis:
   humanURL: https://api.spekit.co/docs/
   baseURL: https://api.spekit.co
   tags:
+  - Analytics
+  - Enablement
+  - User
+  - Reporting
+  tags_raw:
   - Analytics
   - Enablement
   - Users
