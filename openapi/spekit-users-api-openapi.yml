@@ -1,0 +1,131 @@
+openapi: 3.2.0
+info:
+  title: Spekit Users API
+  version: 1.0.0 (v1)
+  description: '
+
+    Here, you will find comprehensive information and resources for integrating and utilizing our powerful API services. Whether you''re a developer, a business owner, or an enthusiast, our API documentation is designed to help you understand the capabilities and functionalities of our API.
+
+
+    Our documentation provides detailed guides, tutorials, code examples, and reference materials to assist you in implementing our API effectively. You can explore various endpoints, authentication methods, request/response formats, and best practices to ensure seamless integration with your applications or systems.
+
+
+    To get started, navigate through the documentation sections to find the specific API you''re interested in. Each API has its own dedicated documentation, including details about its endpoints, parameters, and possible responses.
+
+
+    Before you dive into the API integration, we kindly request that you review our <a href="https://spekit.com/api-license-agreement" target="_blank">API License Agreement</a> to understand the terms and conditions associated with using our services. It outlines important legal agreements, restrictions, and privacy considerations that govern your usage of our API.
+
+
+    To access the API License Agreement, please visit <a href="https://spekit.com/api-license-agreement" target="_blank">https://spekit.com/api-license-agreement</a>.
+
+
+    Thank you for choosing Spekit, and we look forward to seeing the innovative applications you''ll create.
+
+
+    Happy coding!
+
+    '
+  license:
+    name: License Agreement
+    url: https://spekit.com/api-license-agreement
+servers:
+- url: https://api.spekit.co
+  description: Spekit API production host. The upstream document published at https://api.spekit.co/api-schema/ declares no servers[]; the host is established by the provider's own Swagger UI at https://api.spekit.co/docs/, which loads the schema and issues same-origin calls, and by the Spekit API Overview help article which links there as the technical API documentation.
+tags:
+- name: Users
+paths:
+  /v1/users/:
+    get:
+      operationId: v1_users_list
+      description: Returns a list of all users for an organization, with account details including team memberships.
+      summary: List all the users.
+      parameters:
+      - name: cursor
+        required: false
+        in: query
+        description: The pagination cursor value.  This is an opaque key provided in the 'next' and 'previous' URLs in API responses. It may be ignored, otherwise.
+        schema:
+          type: string
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page. Default value is 50. Maximum is 100.
+        schema:
+          type: integer
+      tags:
+      - Users
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserList'
+          description: ''
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        is_active:
+          type: boolean
+        created_on:
+          type: string
+          format: date-time
+        teams:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamRole'
+      required:
+      - email
+      - first_name
+      - teams
+    TeamRole:
+      type: object
+      description: Teams and roles of a user.
+      properties:
+        team:
+          type: string
+          readOnly: true
+        role:
+          type: string
+          readOnly: true
+      required:
+      - role
+      - team
+    PaginatedUserList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"
