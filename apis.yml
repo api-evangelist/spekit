@@ -56,7 +56,7 @@ created: '2026-07-17'
 modified: '2026-08-14'
 tags:
 - Company
-- Software-as-a-Service
+- Saas
 - Sales Enablement
 - Revenue Enablement
 - Digital Adoption
@@ -145,6 +145,8 @@ apis:
   humanURL: https://api.spekit.co/docs/
   baseURL: https://api.spekit.co
   tags:
+  - User
+  tags_raw:
   - Users
   properties:
   - type: OpenAPI
