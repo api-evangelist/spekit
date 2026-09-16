@@ -1,23 +1,18 @@
 aid: spekit
 name: Spekit
-description: >-
-  Spekit is an AI-powered revenue enablement platform for B2B sales teams,
-  delivering coaching, content, and deal intelligence inside rep workflows. Its
-  GTM Knowledge Engine keeps governed go-to-market knowledge accurate and
-  on-brand, pairs agentic coaching (the AI Sidekick) with unified deal context
-  from Salesforce, Gong, and email, and generates personalized buyer experiences
-  such as automated deal rooms. Spekit exposes its governed knowledge to AI
-  agents over the Model Context Protocol (MCP) so any LLM or MCP-enabled tool
-  always has the latest content. It is SOC 2 Type II audited and integrates
-  across Salesforce, Slack, Gmail, Outlook, HubSpot, and major SSO providers.
-  Spekit ships two independent programmatic surfaces that do not overlap: a
-  read-only REST API at api.spekit.co, published as OpenAPI 3.0.3 and rendered
-  in Swagger UI, returning users, searches, Spek views and reactions, and a
-  21-type activity feed for BI and enablement-ROI reporting; and a remote MCP
-  connector at mcp.spekit.co/mcp with 19 read and write tools over governed
-  content, secured by OAuth 2.0 authorization code with PKCE and dynamic client
-  registration. Surfaced as a portfolio company of Craft Ventures, Felicis, and
-  Foundry Group and enriched by the API Evangelist pipeline.
+description: 'Spekit is an AI-powered revenue enablement platform for B2B sales teams, delivering coaching,
+  content, and deal intelligence inside rep workflows. Its GTM Knowledge Engine keeps governed go-to-market
+  knowledge accurate and on-brand, pairs agentic coaching (the AI Sidekick) with unified deal context
+  from Salesforce, Gong, and email, and generates personalized buyer experiences such as automated deal
+  rooms. Spekit exposes its governed knowledge to AI agents over the Model Context Protocol (MCP) so any
+  LLM or MCP-enabled tool always has the latest content. It is SOC 2 Type II audited and integrates across
+  Salesforce, Slack, Gmail, Outlook, HubSpot, and major SSO providers. Spekit ships two independent programmatic
+  surfaces that do not overlap: a read-only REST API at api.spekit.co, published as OpenAPI 3.0.3 and
+  rendered in Swagger UI, returning users, searches, Spek views and reactions, and a 21-type activity
+  feed for BI and enablement-ROI reporting; and a remote MCP connector at mcp.spekit.co/mcp with 19 read
+  and write tools over governed content, secured by OAuth 2.0 authorization code with PKCE and dynamic
+  client registration. Surfaced as a portfolio company of Craft Ventures, Felicis, and Foundry Group and
+  enriched by the API Evangelist pipeline.'
 url: https://raw.githubusercontent.com/api-evangelist/spekit/refs/heads/main/apis.yml
 deliveryModel:
   model: saas
@@ -53,7 +48,7 @@ x-tier: stub
 x-tier-reason: portfolio-lead
 specificationVersion: '0.23'
 created: '2026-07-17'
-modified: '2026-08-14'
+modified: '2026-09-16'
 tags:
 - Company
 - Software-as-a-Service
@@ -200,7 +195,7 @@ common:
 - type: TermsOfService
   url: https://www.spekit.com/legal/msa
 - type: OpenAPI
-  url: openapi/spekit-openapi.yml
+  url: openapi/_original/spekit-openapi.yml
 - type: Overlay
   url: overlays/spekit-openapi-overlay.yaml
 - type: ToolCrosswalk
