@@ -11,12 +11,11 @@ sources:
 server:
   name: spekit
   display_name: Spekit MCP
-  description: >-
-    The Spekit MCP connector exposes governed Spekit GTM content — Speks, topics, templates,
-    companies and Deal Rooms — to any AI tool that supports a custom MCP connector by URL with
-    dynamic client registration. Every call runs as the signed-in user and is scoped to that
-    user's existing Spekit role; the connector grants no access the user does not already have
-    in the Spekit web app, and enforcement is at the backend API layer, not in the connector.
+  description: The Spekit MCP connector exposes governed Spekit GTM content — Speks, topics, templates,
+    companies and Deal Rooms — to any AI tool that supports a custom MCP connector by URL with dynamic
+    client registration. Every call runs as the signed-in user and is scoped to that user's existing Spekit
+    role; the connector grants no access the user does not already have in the Spekit web app, and enforcement
+    is at the backend API layer, not in the connector.
   transport: http
   url: https://mcp.spekit.co/mcp
   compatible_clients:
@@ -29,22 +28,9 @@ server:
   marketplace_listings: none yet — Spekit states it is in the submission queue for the AI tool marketplaces.
 deployment:
   mode: remote
-  endpoint: https://mcp.spekit.co/mcp
-  auth: oauth
-  verified: probed
-  checked: '2026-08-14'
-  evidence:
-  - probe: POST https://mcp.spekit.co/mcp {"jsonrpc":"2.0","id":1,"method":"tools/list"}
-    http_status: 401
-    body: '{"error": "invalid_token", "error_description": "Authentication failed..."}'
-    www_authenticate: >-
-      Bearer error="invalid_token", resource_metadata="https://mcp.spekit.co/.well-known/oauth-protected-resource/mcp"
-  - probe: GET https://mcp.spekit.co/.well-known/oauth-authorization-server
-    http_status: 200
-    file: ../well-known/spekit-mcp-oauth-authorization-server.json
-  - probe: GET https://mcp.spekit.co/.well-known/oauth-protected-resource/mcp
-    http_status: 200
-    file: ../well-known/spekit-mcp-oauth-protected-resource.json
+  verified: searched
+  checked: '2026-08-12'
+  source: catalog MCP census
 authorization:
   model: OAuth 2.0 authorization code with PKCE (S256 required)
   dynamic_client_registration: true
@@ -52,19 +38,21 @@ authorization:
   authorization_endpoint: https://mcp.spekit.co/authorize
   token_endpoint: https://mcp.spekit.co/token
   issuer: https://mcp.spekit.co/
-  scopes: [openid, profile, email, read]
+  scopes:
+  - openid
+  - profile
+  - email
+  - read
   machine_to_machine: false
-  note: >-
-    Spekit states there is no client-credentials / machine-to-machine path — every connection
-    requires an interactive sign-in and consent with the user's own Spekit login.
+  note: Spekit states there is no client-credentials / machine-to-machine path — every connection requires
+    an interactive sign-in and consent with the user's own Spekit login.
   access_token_lifetime: 24 hours
   refresh_token_lifetime: 30 days, rotating on every use (prior token cancelled on refresh)
   token_format: RS256-signed JWT verified against the IdP JWKS, checking issuer and audience
-tools_schema_status: >-
-  AUTH-GATED. tools/list returns HTTP 401 invalid_token anonymously, so the live inputSchema for
-  each tool could not be introspected. The tool set below is the provider's OWN published list
-  from the Spekit MCP Overview & Setup help article — names and behaviour are verbatim from
-  Spekit; the machine-readable input schemas require an authenticated introspection.
+tools_schema_status: AUTH-GATED. tools/list returns HTTP 401 invalid_token anonymously, so the live inputSchema
+  for each tool could not be introspected. The tool set below is the provider's OWN published list from
+  the Spekit MCP Overview & Setup help article — names and behaviour are verbatim from Spekit; the machine-readable
+  input schemas require an authenticated introspection.
 tools:
 - name: Get authenticated user
   category: identity
@@ -147,27 +135,23 @@ tool_counts:
   read: 12
   write: 7
 governance:
-  write_confirmation: >-
-    Every write tool is annotated as able to change data, and the calling AI tool prompts the user
-    to confirm before it runs. The confirmation is enforced by the AI client via the MCP standard,
+  write_confirmation: Every write tool is annotated as able to change data, and the calling AI tool prompts
+    the user to confirm before it runs. The confirmation is enforced by the AI client via the MCP standard,
     not by a Spekit-side setting — Spekit's own docs recommend validating this per tool/session.
-  read_only_mode: >-
-    Not available. Access is bounded by the authenticated user's Spekit role only; there is no
-    setting that forces the connector read-only independent of role. A company-level feature flag
-    controls whether the connector is enabled at all; admins can control which tools users see
-    inside their AI tool's Connectors section.
+  read_only_mode: Not available. Access is bounded by the authenticated user's Spekit role only; there
+    is no setting that forces the connector read-only independent of role. A company-level feature flag
+    controls whether the connector is enabled at all; admins can control which tools users see inside
+    their AI tool's Connectors section.
   scoping: Cannot be scoped to specific Topics or Deal Rooms — scope is the user's own visibility.
   rate_limited: true
   rate_limit_note: Enforced per session; quota enforcement validated across service instances.
-  logging: >-
-    Question and answer content is not logged. Operational metadata only — tool called,
-    success/failure, response time, calling user identity.
+  logging: Question and answer content is not logged. Operational metadata only — tool called, success/failure,
+    response time, calling user identity.
   retention: access tokens 24h; refresh tokens 30d; logs 100d; traces 7d; metrics 180d
   training_on_customer_data: false
   hosting: Same AWS infrastructure and region as the core Spekit platform, under the existing DPA.
-  penetration_tested: >-
-    Not yet as a dedicated target — the MCP server is in scope for the next security assessment
-    (testing planned Sept–Oct); the backend services it proxies were independently pen-tested
+  penetration_tested: Not yet as a dedicated target — the MCP server is in scope for the next security
+    assessment (testing planned Sept–Oct); the backend services it proxies were independently pen-tested
     within the past year. Spekit maintains a company-wide SOC 2 Type II report.
 limitations:
 - No delete of any kind through the connector.

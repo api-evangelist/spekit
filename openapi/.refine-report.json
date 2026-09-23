@@ -1,0 +1,35 @@
+{
+  "provider": "spekit",
+  "sources": [
+    "_original/spekit-openapi-original.yml"
+  ],
+  "outputs": [
+    "spekit-searches-api-openapi.yml",
+    "spekit-spek-reactions-api-openapi.yml",
+    "spekit-spek-views-api-openapi.yml",
+    "spekit-user-activities-api-openapi.yml",
+    "spekit-users-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "1 archived document(s) dropped as subsets of other archived documents",
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "spekit-openapi-original.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "spekit-openapi-original.yml: declared missing tag: Searches",
+    "spekit-openapi-original.yml: declared missing tag: Spek Reactions",
+    "spekit-openapi-original.yml: declared missing tag: Spek Views",
+    "spekit-openapi-original.yml: declared missing tag: User Activities",
+    "spekit-openapi-original.yml: declared missing tag: Users",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "_original/spekit-openapi.yml: archived document superseded by a larger archived document",
+    "spekit-searches-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "spekit-spek-reactions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "spekit-spek-views-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "spekit-user-activities-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "spekit-users-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}
