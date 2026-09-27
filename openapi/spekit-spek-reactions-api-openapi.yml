@@ -52,6 +52,24 @@ paths:
           description: ''
 components:
   schemas:
+    PaginatedTermReactionsList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TermReactions'
     User:
       type: object
       properties:
@@ -79,37 +97,6 @@ components:
       - email
       - first_name
       - teams
-    PaginatedTermReactionsList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/TermReactions'
-    TeamRole:
-      type: object
-      description: Teams and roles of a user.
-      properties:
-        team:
-          type: string
-          readOnly: true
-        role:
-          type: string
-          readOnly: true
-      required:
-      - role
-      - team
     TermReactions:
       type: object
       properties:
@@ -133,6 +120,19 @@ components:
       - spek_name
       - spek_type
       - user
+    TeamRole:
+      type: object
+      description: Teams and roles of a user.
+      properties:
+        team:
+          type: string
+          readOnly: true
+        role:
+          type: string
+          readOnly: true
+      required:
+      - role
+      - team
   securitySchemes:
     tokenAuth:
       type: apiKey

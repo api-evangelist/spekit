@@ -347,6 +347,19 @@ paths:
           description: ''
 components:
   schemas:
+    TeamRole:
+      type: object
+      description: Teams and roles of a user.
+      properties:
+        team:
+          type: string
+          readOnly: true
+        role:
+          type: string
+          readOnly: true
+      required:
+      - role
+      - team
     User:
       type: object
       properties:
@@ -374,6 +387,24 @@ components:
       - email
       - first_name
       - teams
+    PaginatedUserActivityList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserActivity'
     UserActivity:
       type: object
       properties:
@@ -393,37 +424,6 @@ components:
       - activity_type
       - ip
       - user
-    PaginatedUserActivityList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserActivity'
-    TeamRole:
-      type: object
-      description: Teams and roles of a user.
-      properties:
-        team:
-          type: string
-          readOnly: true
-        role:
-          type: string
-          readOnly: true
-      required:
-      - role
-      - team
   securitySchemes:
     tokenAuth:
       type: apiKey

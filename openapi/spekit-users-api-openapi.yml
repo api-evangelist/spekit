@@ -40,6 +40,24 @@ paths:
           description: ''
 components:
   schemas:
+    PaginatedUserList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
     User:
       type: object
       properties:
@@ -67,24 +85,6 @@ components:
       - email
       - first_name
       - teams
-    PaginatedUserList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/User'
     TeamRole:
       type: object
       description: Teams and roles of a user.

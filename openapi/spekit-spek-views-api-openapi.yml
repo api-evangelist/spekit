@@ -52,56 +52,6 @@ paths:
           description: ''
 components:
   schemas:
-    TeamRole:
-      type: object
-      description: Teams and roles of a user.
-      properties:
-        team:
-          type: string
-          readOnly: true
-        role:
-          type: string
-          readOnly: true
-      required:
-      - role
-      - team
-    SpekDetails:
-      type: object
-      properties:
-        id:
-          type: string
-        link:
-          type: string
-        type_short:
-          type: string
-        label:
-          type: string
-        deleted:
-          type: boolean
-      required:
-      - deleted
-      - id
-      - label
-      - link
-      - type_short
-    PaginatedSpekViewsList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/SpekViews'
     User:
       type: object
       properties:
@@ -129,6 +79,56 @@ components:
       - email
       - first_name
       - teams
+    TeamRole:
+      type: object
+      description: Teams and roles of a user.
+      properties:
+        team:
+          type: string
+          readOnly: true
+        role:
+          type: string
+          readOnly: true
+      required:
+      - role
+      - team
+    PaginatedSpekViewsList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SpekViews'
+    SpekDetails:
+      type: object
+      properties:
+        id:
+          type: string
+        link:
+          type: string
+        type_short:
+          type: string
+        label:
+          type: string
+        deleted:
+          type: boolean
+      required:
+      - deleted
+      - id
+      - label
+      - link
+      - type_short
     SpekViews:
       type: object
       properties:
