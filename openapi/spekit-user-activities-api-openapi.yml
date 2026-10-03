@@ -347,19 +347,6 @@ paths:
           description: ''
 components:
   schemas:
-    TeamRole:
-      type: object
-      description: Teams and roles of a user.
-      properties:
-        team:
-          type: string
-          readOnly: true
-        role:
-          type: string
-          readOnly: true
-      required:
-      - role
-      - team
     User:
       type: object
       properties:
@@ -405,6 +392,19 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UserActivity'
+    TeamRole:
+      type: object
+      description: Teams and roles of a user.
+      properties:
+        team:
+          type: string
+          readOnly: true
+        role:
+          type: string
+          readOnly: true
+      required:
+      - role
+      - team
     UserActivity:
       type: object
       properties:

@@ -79,24 +79,6 @@ components:
       - email
       - first_name
       - teams
-    PaginatedSearchesList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Searches'
     TeamRole:
       type: object
       description: Teams and roles of a user.
@@ -126,6 +108,24 @@ components:
       - keywords
       - source
       - user
+    PaginatedSearchesList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Searches'
   securitySchemes:
     tokenAuth:
       type: apiKey

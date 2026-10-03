@@ -52,24 +52,6 @@ paths:
           description: ''
 components:
   schemas:
-    PaginatedTermReactionsList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/TermReactions'
     User:
       type: object
       properties:
@@ -97,6 +79,24 @@ components:
       - email
       - first_name
       - teams
+    PaginatedTermReactionsList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TermReactions'
     TermReactions:
       type: object
       properties:

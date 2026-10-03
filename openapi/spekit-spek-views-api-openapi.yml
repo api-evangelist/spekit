@@ -79,6 +79,22 @@ components:
       - email
       - first_name
       - teams
+    TermViews:
+      type: object
+      properties:
+        id:
+          type: string
+        source:
+          type: string
+        user_action:
+          type: string
+        created_on:
+          type: string
+          format: date-time
+      required:
+      - id
+      - source
+      - user_action
     TeamRole:
       type: object
       description: Teams and roles of a user.
@@ -92,24 +108,6 @@ components:
       required:
       - role
       - team
-    PaginatedSpekViewsList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/SpekViews'
     SpekDetails:
       type: object
       properties:
@@ -151,22 +149,24 @@ components:
       - spek
       - user
       - view
-    TermViews:
+    PaginatedSpekViewsList:
       type: object
       properties:
-        id:
-          type: string
-        source:
-          type: string
-        user_action:
-          type: string
-        created_on:
-          type: string
-          format: date-time
-      required:
-      - id
-      - source
-      - user_action
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SpekViews'
   securitySchemes:
     tokenAuth:
       type: apiKey
