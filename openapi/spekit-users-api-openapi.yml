@@ -67,6 +67,19 @@ components:
       - email
       - first_name
       - teams
+    TeamRole:
+      type: object
+      description: Teams and roles of a user.
+      properties:
+        team:
+          type: string
+          readOnly: true
+        role:
+          type: string
+          readOnly: true
+      required:
+      - role
+      - team
     PaginatedUserList:
       type: object
       properties:
@@ -85,19 +98,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/User'
-    TeamRole:
-      type: object
-      description: Teams and roles of a user.
-      properties:
-        team:
-          type: string
-          readOnly: true
-        role:
-          type: string
-          readOnly: true
-      required:
-      - role
-      - team
   securitySchemes:
     tokenAuth:
       type: apiKey

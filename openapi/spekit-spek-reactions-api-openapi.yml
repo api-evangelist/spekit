@@ -52,51 +52,6 @@ paths:
           description: ''
 components:
   schemas:
-    User:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        first_name:
-          type: string
-        last_name:
-          type: string
-        email:
-          type: string
-          format: email
-          maxLength: 254
-        is_active:
-          type: boolean
-        created_on:
-          type: string
-          format: date-time
-        teams:
-          type: array
-          items:
-            $ref: '#/components/schemas/TeamRole'
-      required:
-      - email
-      - first_name
-      - teams
-    PaginatedTermReactionsList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/TermReactions'
     TermReactions:
       type: object
       properties:
@@ -133,6 +88,51 @@ components:
       required:
       - role
       - team
+    PaginatedTermReactionsList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TermReactions'
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        is_active:
+          type: boolean
+        created_on:
+          type: string
+          format: date-time
+        teams:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamRole'
+      required:
+      - email
+      - first_name
+      - teams
   securitySchemes:
     tokenAuth:
       type: apiKey

@@ -52,6 +52,41 @@ paths:
           description: ''
 components:
   schemas:
+    SpekDetails:
+      type: object
+      properties:
+        id:
+          type: string
+        link:
+          type: string
+        type_short:
+          type: string
+        label:
+          type: string
+        deleted:
+          type: boolean
+      required:
+      - deleted
+      - id
+      - label
+      - link
+      - type_short
+    TermViews:
+      type: object
+      properties:
+        id:
+          type: string
+        source:
+          type: string
+        user_action:
+          type: string
+        created_on:
+          type: string
+          format: date-time
+      required:
+      - id
+      - source
+      - user_action
     User:
       type: object
       properties:
@@ -79,54 +114,6 @@ components:
       - email
       - first_name
       - teams
-    TermViews:
-      type: object
-      properties:
-        id:
-          type: string
-        source:
-          type: string
-        user_action:
-          type: string
-        created_on:
-          type: string
-          format: date-time
-      required:
-      - id
-      - source
-      - user_action
-    TeamRole:
-      type: object
-      description: Teams and roles of a user.
-      properties:
-        team:
-          type: string
-          readOnly: true
-        role:
-          type: string
-          readOnly: true
-      required:
-      - role
-      - team
-    SpekDetails:
-      type: object
-      properties:
-        id:
-          type: string
-        link:
-          type: string
-        type_short:
-          type: string
-        label:
-          type: string
-        deleted:
-          type: boolean
-      required:
-      - deleted
-      - id
-      - label
-      - link
-      - type_short
     SpekViews:
       type: object
       properties:
@@ -149,6 +136,19 @@ components:
       - spek
       - user
       - view
+    TeamRole:
+      type: object
+      description: Teams and roles of a user.
+      properties:
+        team:
+          type: string
+          readOnly: true
+        role:
+          type: string
+          readOnly: true
+      required:
+      - role
+      - team
     PaginatedSpekViewsList:
       type: object
       properties:
